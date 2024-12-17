@@ -1,0 +1,28 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "eventima-93e43",
+          "appId": "1:474057687798:android:e52ed00d449f6ac1cee2d7",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "eventima-93e43",
+          "configurations": {
+            "android": "1:474057687798:android:e52ed00d449f6ac1cee2d7",
+            "ios": "1:474057687798:ios:794c3b552da5902bcee2d7",
+            "web": "1:474057687798:web:a7077f9a8353d6c6cee2d7",
+            "windows": "1:474057687798:web:83f677356a0e4ca4cee2d7"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

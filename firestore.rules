@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin rules: Only users with an 'admin' custom claim can access admin data
+    match /users/{userId} {
+      // Admins can read and write any user document
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+
+      // Users can read and update their own document
+      allow read, update: if request.auth != null && request.auth.uid == userId;
+
+      // Allow creating a user document when they first sign up
+      allow create: if request.auth != null && request.resource.data.keys().hasOnly(['uid', 'role', 'companyName', 'ownerName']);
+    }
+
+    // Catering Requests: Service providers can read and update their own catering requests
+    match /users/{userId}/catering_requests/{requestId} {
+      // Service providers can read and update their own catering requests
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Admins can read and write catering requests for any user
+      allow read, write: if request.auth != null && request.auth.token.admin == true;
+    }
+
+    // Public read for specific cases (e.g., service provider view)
+    match /users/{userId}/catering_requests/{requestId} {
+      allow read: if request.auth != null;
+    }
+
+    // General public data (if needed)
+    match /public/{document=**} {
+      // Public read-only access to the 'public' collection
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Default deny all rule
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+// Catering Requests: Service providers can read and update their own catering requests
+match /users/{userId}/catering_requests/{requestId} {
+  // Service providers can read and update their own catering requests
+  allow read, write: if request.auth != null && request.auth.uid == userId;
+  // Admins can read and write catering requests for any user
+  allow read, write: if request.auth != null && request.auth.token.admin == true;
+}
